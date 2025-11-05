@@ -10,7 +10,8 @@ import { logEvent } from "@/lib/log";
 export async function POST(req) {
   try {
     const { token, newPassword } = await req.json();
-
+    console.log("RESET PASSWORD TOKEN", token);
+    console.log("NEW PASSWORD", newPassword);
     if (!token || !newPassword)
       return NextResponse.json(
         { error: "Token and new password required" },

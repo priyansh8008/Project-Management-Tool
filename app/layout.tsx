@@ -1,17 +1,36 @@
-// app/layout.tsx
-import "./globals.css";
+"use client"
 
-export const metadata = {
-  title: "Project Management Tool",
-  description: "Mini project management tool with custom authentication",
-};
+import type React from "react"
+import { Geist, Geist_Mono } from "next/font/google"
+import { useEffect, useState } from "react"
+import "./globals.css"
 
-export default function RootLayout({ children }) {
+const _geist = Geist({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  const [theme, setTheme] = useState("light")
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme")
+    if (stored) {
+      setTheme(stored)
+      document.documentElement.classList.toggle("dark", stored === "dark")
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark")
+      document.documentElement.classList.add("dark")
+    }
+  }, [])
+
   return (
-    <html lang="en">
-      <body className="bg-gray-50 text-gray-900 min-h-screen flex flex-col items-center justify-center">
+    <html lang="en" suppressHydrationWarning>
+      <body className={`font-sans antialiased`}>
         {children}
       </body>
     </html>
-  );
+  )
 }
